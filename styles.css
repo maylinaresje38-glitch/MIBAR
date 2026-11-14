@@ -1,0 +1,947 @@
+/* ==========================================================
+   Bar La Esquina · styles.css
+   ========================================================== */
+
+/* 1. FUENTES (Google Fonts). Si no hay internet, entra system-ui */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap");
+
+/* 2. VARIABLES: paleta, tipografías, sombras y radios */
+:root {
+  /* Colores */
+  --naranja: #F2994A;
+  --naranja-hover: #E58427;
+  --naranja-suave: #FDE6CE;
+  --cafe: #4B2E1E;
+  --cafe-claro: #7A5440;
+  --crema: #FFF7EC;
+  --crema-oscuro: #F6E8D3;
+  --blanco: #FFFFFF;
+  --verde: #8FD3A4;
+  --verde-hover: #7BC794;
+  --verde-texto: #1F4D33;
+  --texto: #3A2A20;
+  --borde: #EBD9BF;
+
+  /* Tipografías */
+  --fuente-titulos: "Poppins", system-ui, sans-serif;
+  --fuente-texto: "Inter", system-ui, sans-serif;
+
+  /* Forma y profundidad */
+  --radio: 16px;
+  --radio-chico: 10px;
+  --sombra: 0 4px 14px rgba(75, 46, 30, 0.10);
+  --sombra-fuerte: 0 10px 24px rgba(75, 46, 30, 0.18);
+  --transicion: 0.2s ease;
+}
+
+/* 3. BASE: reseteo y estilos generales */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+body {
+  margin: 0;
+  background: var(--crema);
+  color: var(--texto);
+  font-family: var(--fuente-texto);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+h1, h2, h3 {
+  margin: 0 0 0.75rem;
+  color: var(--cafe);
+  font-family: var(--fuente-titulos);
+  line-height: 1.2;
+}
+
+h1 { font-size: 1.6rem; font-weight: 700; }
+h2 { font-size: 1.4rem; font-weight: 600; }
+h3 { font-size: 1.1rem; font-weight: 600; }
+
+/* 4. ENCABEZADO */
+#encabezado {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: var(--blanco);
+  border-bottom: 4px solid var(--naranja);
+  box-shadow: var(--sombra);
+}
+
+#nombre-bar {
+  margin: 0;
+}
+
+#nombre-bar::before {
+  content: "🍻 ";
+}
+
+#acciones-datos {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* 5. BOTONES (base y variantes) */
+button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.65rem 1.1rem;
+  border: 2px solid var(--naranja);
+  border-radius: var(--radio-chico);
+  background: var(--naranja);
+  color: var(--cafe);
+  font-family: var(--fuente-texto);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--transicion), border-color var(--transicion),
+              transform var(--transicion), box-shadow var(--transicion);
+}
+
+button:hover {
+  background: var(--naranja-hover);
+  border-color: var(--naranja-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--sombra-fuerte);
+}
+
+button:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+/* Exportar e Importar: botones secundarios (borde naranja, fondo claro) */
+#btn-exportar,
+#btn-importar {
+  background: var(--blanco);
+}
+
+#btn-exportar:hover,
+#btn-importar:hover {
+  background: var(--naranja);
+  border-color: var(--naranja);
+}
+
+#btn-exportar::before { content: "📤"; }
+#btn-importar::before { content: "📥"; }
+#btn-guardar-producto::before { content: "💾"; }
+
+:focus-visible {
+  outline: 3px solid var(--cafe);
+  outline-offset: 2px;
+}
+
+/* 6. MENÚ PRINCIPAL */
+#menu-principal {
+  padding: 0.75rem 1rem 0;
+}
+
+#menu-principal ul {
+  display: flex;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0 0 0.5rem;
+  list-style: none;
+  overflow-x: auto;
+}
+
+#menu-principal a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1.1rem;
+  border: 2px solid var(--borde);
+  border-radius: 999px;
+  background: var(--blanco);
+  color: var(--cafe);
+  font-family: var(--fuente-titulos);
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background var(--transicion), border-color var(--transicion),
+              transform var(--transicion), box-shadow var(--transicion);
+}
+
+#menu-principal a:hover {
+  background: var(--naranja-suave);
+  border-color: var(--naranja);
+  transform: translateY(-2px);
+  box-shadow: var(--sombra);
+}
+
+#enlace-salon::before { content: "🍽️"; }
+#enlace-carta::before { content: "📖"; }
+#enlace-caja::before  { content: "💰"; }
+
+/* Enlace activo: lo marca app.js con aria-current */
+#menu-principal a[aria-current="page"] {
+  background: var(--naranja);
+  border-color: var(--naranja);
+}
+
+/* 7. SECCIONES: se ve una sola a la vez (app.js usa el atributo hidden) */
+#contenido {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+#contenido > section {
+  scroll-margin-top: 1rem;
+}
+
+#titulo-salon::before { content: "🍽️ "; }
+#titulo-carta::before { content: "📖 "; }
+#titulo-caja::before  { content: "💰 "; }
+#titulo-pedido::before { content: "🧾 "; }
+
+/* 8. TARJETAS: formularios, panel de pedido y elementos de listas */
+#form-producto,
+#panel-pedido,
+#lista-productos li,
+#lista-pedido li {
+  background: var(--blanco);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+}
+
+#form-producto,
+#panel-pedido {
+  padding: 1.25rem;
+}
+
+#lista-productos,
+#lista-pedido {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+#lista-productos li,
+#lista-pedido li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  transition: transform var(--transicion), box-shadow var(--transicion);
+}
+
+#lista-productos li:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--sombra-fuerte);
+}
+
+/* Producto no disponible (clase para usar desde JS) */
+#lista-productos li.no-disponible {
+  opacity: 0.55;
+}
+
+/* Mensajes de lista vacía */
+#lista-productos:empty::before {
+  content: "🍹 Todavía no hay productos en la carta";
+  color: var(--cafe-claro);
+}
+
+#lista-pedido:empty::before {
+  content: "🛒 Sin productos en el pedido";
+  color: var(--cafe-claro);
+}
+
+/* 9. FORMULARIO DE PRODUCTO */
+#form-producto {
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+  margin-bottom: 1.25rem;
+}
+
+#form-producto label,
+#form-contacto label,
+#form-evento label {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--cafe);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="tel"],
+input[type="email"],
+input[type="date"],
+input[type="time"],
+select {
+  width: 100%;
+  padding: 0.65rem 0.8rem;
+  border: 2px solid var(--borde);
+  border-radius: var(--radio-chico);
+  background: var(--crema);
+  color: var(--texto);
+  font-family: var(--fuente-texto);
+  font-size: 1rem;
+  transition: border-color var(--transicion), box-shadow var(--transicion);
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="tel"]:focus,
+input[type="email"]:focus,
+input[type="date"]:focus,
+input[type="time"]:focus,
+select:focus {
+  outline: none;
+  border-color: var(--naranja);
+  box-shadow: 0 0 0 4px var(--naranja-suave);
+}
+
+/* Fila del checkbox "Disponible" */
+#form-producto div:has(input[type="checkbox"]) {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+#form-producto div:has(input[type="checkbox"]) label {
+  margin: 0;
+}
+
+input[type="checkbox"] {
+  width: 1.2rem;
+  height: 1.2rem;
+  accent-color: var(--naranja);
+}
+
+/* 10. SALÓN: grilla de mesas y panel lateral */
+#salon-layout {
+  display: grid;
+  gap: 1.25rem;
+}
+
+#grilla-mesas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 0.9rem;
+  align-content: start;
+}
+
+#grilla-mesas:empty::before {
+  content: "🪑 Todavía no hay mesas";
+  grid-column: 1 / -1;
+  color: var(--cafe-claro);
+}
+
+/* Mesa: tarjeta cuadrada grande */
+.mesa {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  aspect-ratio: 1 / 1;
+  padding: 0.5rem;
+  border: 3px solid transparent;
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  font-family: var(--fuente-titulos);
+  font-size: 1.4rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.mesa-capacidad {
+  font-family: var(--fuente-texto);
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.mesa::after {
+  font-family: var(--fuente-texto);
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+/* Verde si está libre, naranja si está ocupada */
+.mesa.libre {
+  background: var(--verde);
+  color: var(--verde-texto);
+}
+
+.mesa.libre::after { content: "✅ Libre"; }
+
+.mesa.libre:hover {
+  background: var(--verde-hover);
+  border-color: transparent;
+}
+
+.mesa.ocupada {
+  background: var(--naranja);
+  color: var(--cafe);
+}
+
+.mesa.ocupada::after { content: "🔥 Ocupada"; }
+
+.mesa.seleccionada {
+  border-color: var(--cafe);
+  box-shadow: var(--sombra-fuerte);
+}
+
+.mesa-total {
+  font-family: var(--fuente-texto);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+/* Panel lateral del pedido */
+#mesa-seleccionada {
+  margin: 0 0 1rem;
+  color: var(--cafe-claro);
+  font-weight: 500;
+}
+
+#total-pedido {
+  margin: 1rem 0 0;
+  padding-top: 0.75rem;
+  border-top: 2px dashed var(--borde);
+  color: var(--cafe);
+  font-family: var(--fuente-titulos);
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-align: right;
+}
+
+/* 11. CAJA DEL DÍA: tabla */
+#seccion-caja {
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+#tabla-caja {
+  width: 100%;
+  min-width: 480px;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--blanco);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  overflow: hidden;
+}
+
+#tabla-caja th,
+#tabla-caja td {
+  padding: 0.8rem 1rem;
+  text-align: left;
+}
+
+#tabla-caja thead th {
+  background: var(--cafe);
+  color: var(--crema);
+  font-family: var(--fuente-titulos);
+  font-weight: 500;
+}
+
+#tabla-caja tbody tr:nth-child(even) {
+  background: var(--crema);
+}
+
+#tabla-caja tbody tr:hover {
+  background: var(--naranja-suave);
+}
+
+#tabla-caja tfoot th,
+#tabla-caja tfoot td {
+  background: var(--naranja-suave);
+  color: var(--cafe);
+  font-family: var(--fuente-titulos);
+  font-weight: 600;
+}
+
+/* 12. PIE */
+#pie {
+  padding: 1.5rem 1rem;
+  color: var(--cafe-claro);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+#pie p {
+  margin: 0;
+}
+
+/* 13. TABLET Y ESCRITORIO: desde 768 px, dos columnas */
+@media (min-width: 768px) {
+  #encabezado {
+    padding: 1.25rem 2rem;
+  }
+
+  #menu-principal {
+    padding: 1rem 2rem 0;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  #contenido {
+    padding: 1.5rem 2rem;
+  }
+
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.6rem; }
+
+  /* Salón: mesas a la izquierda, pedido a la derecha */
+  #salon-layout {
+    grid-template-columns: 1.6fr 1fr;
+    align-items: start;
+  }
+
+  #panel-pedido {
+    position: sticky;
+    top: 1rem;
+  }
+
+  /* Carta: formulario y lista lado a lado */
+  #seccion-carta:not([hidden]) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 1.5rem;
+    align-items: start;
+  }
+
+  #seccion-carta:not([hidden]) > h2 {
+    grid-column: 1 / -1;
+  }
+
+  #form-producto {
+    margin-bottom: 0;
+  }
+}
+
+/* 15. CONTACTOS Y EVENTOS: mismo estilo de tarjetas que la Carta */
+#form-contacto,
+#form-evento {
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+  margin-bottom: 1.25rem;
+  padding: 1.25rem;
+  background: var(--blanco);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+}
+
+#form-contacto label,
+#form-evento label {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--cafe);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+#btn-guardar-contacto::before,
+#btn-guardar-evento::before { content: "➕"; }
+
+#enlace-contactos::before { content: "👥"; }
+#enlace-eventos::before   { content: "🎉"; }
+#titulo-contactos::before { content: "👥 "; }
+#titulo-eventos::before   { content: "🎉 "; }
+
+#lista-contactos,
+#lista-eventos {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+#lista-contactos li,
+#lista-eventos li {
+  display: grid;
+  gap: 0.2rem;
+  padding: 0.85rem 1rem;
+  background: var(--blanco);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  transition: transform var(--transicion), box-shadow var(--transicion);
+}
+
+#lista-contactos li:hover,
+#lista-eventos li:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--sombra-fuerte);
+}
+
+#lista-contactos li strong,
+#lista-eventos li strong {
+  color: var(--cafe);
+  font-family: var(--fuente-titulos);
+}
+
+#lista-contactos:empty::before {
+  content: "👥 Todavía no hay contactos";
+  color: var(--cafe-claro);
+}
+
+#lista-eventos:empty::before {
+  content: "🎉 Todavía no hay eventos";
+  color: var(--cafe-claro);
+}
+
+@media (min-width: 768px) {
+  #seccion-contactos:not([hidden]),
+  #seccion-eventos:not([hidden]) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 1.5rem;
+    align-items: start;
+  }
+
+  #seccion-contactos:not([hidden]) > h2,
+  #seccion-eventos:not([hidden]) > h2 {
+    grid-column: 1 / -1;
+  }
+
+  #form-contacto,
+  #form-evento {
+    margin-bottom: 0;
+  }
+}
+
+/* 16. PANEL DEL PEDIDO: agregar productos e ítems con + y − */
+.solo-lectores {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+#form-agregar-item fieldset {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.75rem;
+  align-items: end;
+  margin: 0 0 1rem;
+  padding: 0 0 1rem;
+  min-width: 0;
+  border: 0;
+  border-bottom: 2px dashed var(--borde);
+}
+
+#form-agregar-item .campo-producto {
+  grid-column: 1 / -1;
+}
+
+#form-agregar-item label {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--cafe);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+#btn-agregar-item::before { content: "🛒"; }
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+button:disabled:hover {
+  background: var(--naranja);
+  border-color: var(--naranja);
+  transform: none;
+  box-shadow: none;
+}
+
+#lista-pedido li {
+  flex-wrap: wrap;
+}
+
+.item-info {
+  display: grid;
+  flex: 1 1 8rem;
+  min-width: 0;
+}
+
+.item-info small {
+  color: var(--cafe-claro);
+}
+
+.item-controles {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.item-cantidad {
+  min-width: 1.5rem;
+  color: var(--cafe);
+  font-family: var(--fuente-titulos);
+  font-weight: 600;
+  text-align: center;
+}
+
+.btn-cantidad {
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border-radius: 50%;
+  background: var(--blanco);
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.btn-cantidad:hover {
+  background: var(--naranja);
+  border-color: var(--naranja);
+}
+
+.item-subtotal {
+  min-width: 5rem;
+  color: var(--cafe);
+  font-family: var(--fuente-titulos);
+  text-align: right;
+}
+
+/* 17. CERRAR CUENTA, TICKET Y CAJA DEL DÍA */
+#mensaje-pedido {
+  margin: 1rem 0 0;
+  padding: 0.65rem 0.9rem;
+  border-radius: var(--radio-chico);
+  background: #FDE3DA;
+  color: #7A2A12;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+#mensaje-pedido:empty {
+  display: none;
+}
+
+#form-cerrar-cuenta fieldset {
+  display: grid;
+  gap: 0.75rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  min-width: 0;
+  border: 0;
+}
+
+#form-cerrar-cuenta label {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--cafe);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+#btn-cerrar-cuenta::before { content: "🧾"; }
+
+/* Subtotal por forma de pago */
+#subtotales-pago {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 0.75rem;
+  margin: 0 0 1.25rem;
+  padding: 0;
+  list-style: none;
+}
+
+#subtotales-pago li {
+  display: grid;
+  gap: 0.15rem;
+  padding: 0.85rem 1rem;
+  background: var(--blanco);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+}
+
+.subtotal-nombre {
+  color: var(--cafe-claro);
+  font-weight: 600;
+}
+
+.subtotal-monto {
+  color: var(--cafe);
+  font-family: var(--fuente-titulos);
+  font-size: 1.3rem;
+}
+
+#tabla-caja thead th:last-child,
+#tabla-caja tbody td:last-child,
+#tabla-caja tfoot td {
+  text-align: right;
+}
+
+#tabla-caja .sin-datos {
+  color: var(--cafe-claro);
+  text-align: center;
+}
+
+/* Ticket: ventana superpuesta */
+#ticket {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 1rem;
+  overflow-y: auto;
+  background: rgba(75, 46, 30, 0.55);
+}
+
+#ticket-papel {
+  width: 100%;
+  max-width: 380px;
+  margin: auto;
+  padding: 1.5rem;
+  background: var(--blanco);
+  border-top: 6px solid var(--naranja);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra-fuerte);
+}
+
+#ticket-titulo {
+  text-align: center;
+}
+
+#ticket-titulo::before { content: "🧾 "; }
+
+.ticket-dato {
+  margin: 0;
+  color: var(--cafe-claro);
+  font-size: 0.9rem;
+}
+
+.ticket-items {
+  display: grid;
+  gap: 0.5rem;
+  margin: 1rem 0;
+  padding: 1rem 0;
+  list-style: none;
+  border-top: 2px dashed var(--borde);
+  border-bottom: 2px dashed var(--borde);
+}
+
+.ticket-items li {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.ticket-items strong {
+  white-space: nowrap;
+}
+
+.ticket-total {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 0 0.5rem;
+  color: var(--cafe);
+  font-family: var(--fuente-titulos);
+  font-size: 1.25rem;
+}
+
+.ticket-pago {
+  margin: 0;
+  font-weight: 600;
+}
+
+.ticket-gracias {
+  margin: 1rem 0 0;
+  color: var(--cafe-claro);
+  text-align: center;
+}
+
+.ticket-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+}
+
+#btn-imprimir-ticket::before { content: "🖨️"; }
+
+#btn-cerrar-ticket {
+  background: var(--blanco);
+}
+
+#btn-cerrar-ticket:hover {
+  background: var(--naranja);
+}
+
+/* Al imprimir solo sale el ticket */
+@media print {
+  body > *:not(#ticket) {
+    display: none !important;
+  }
+
+  #ticket {
+    position: static;
+    display: block;
+    padding: 0;
+    background: none;
+  }
+
+  #ticket-papel {
+    max-width: none;
+    border-top: 0;
+    box-shadow: none;
+  }
+
+  .ticket-acciones {
+    display: none;
+  }
+}
+
+/* 18. MENSAJES DE EXPORTAR / IMPORTAR */
+#mensaje-datos {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+#mensaje-datos[data-tipo="error"] {
+  background: #FDE3DA;
+  color: #7A2A12;
+}
+
+#mensaje-datos[data-tipo="ok"] {
+  background: #DDF3E4;
+  color: var(--verde-texto);
+}
+
+/* 14. ACCESIBILIDAD: respeta a quien prefiere menos movimiento */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+  }
+}

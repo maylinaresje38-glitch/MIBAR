@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bar La Esquina</title>
+
+  <!-- App instalable (PWA) -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#F2994A">
+  <link rel="icon" type="image/png" href="icono-192.png">
+  <link rel="apple-touch-icon" href="icono-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="La Esquina">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header id="encabezado">
+    <h1 id="nombre-bar">Bar La Esquina</h1>
+
+    <div id="acciones-datos">
+      <button type="button" id="btn-exportar">Exportar</button>
+      <button type="button" id="btn-importar">Importar</button>
+      <input type="file" id="input-importar" accept=".json" hidden>
+    </div>
+  </header>
+
+  <p id="mensaje-datos" hidden></p>
+
+  <nav id="menu-principal" aria-label="Menú principal">
+    <ul>
+      <li><a href="#seccion-salon" id="enlace-salon">Salón</a></li>
+      <li><a href="#seccion-carta" id="enlace-carta">Carta</a></li>
+      <li><a href="#seccion-contactos" id="enlace-contactos">Contactos</a></li>
+      <li><a href="#seccion-eventos" id="enlace-eventos">Eventos</a></li>
+      <li><a href="#seccion-caja" id="enlace-caja">Caja del día</a></li>
+    </ul>
+  </nav>
+
+  <main id="contenido">
+
+    <!-- SALÓN -->
+    <section id="seccion-salon" aria-labelledby="titulo-salon">
+      <h2 id="titulo-salon">Salón</h2>
+
+      <div id="salon-layout">
+        <div id="grilla-mesas" aria-label="Mesas del salón"></div>
+
+        <aside id="panel-pedido" aria-labelledby="titulo-pedido">
+          <h3 id="titulo-pedido">Pedido de la mesa</h3>
+          <p id="mesa-seleccionada">Ninguna mesa seleccionada</p>
+
+          <form id="form-agregar-item">
+            <fieldset id="campos-agregar" disabled>
+              <legend class="solo-lectores">Agregar producto al pedido</legend>
+
+              <div class="campo-producto">
+                <label for="item-producto">Producto</label>
+                <select id="item-producto" name="producto" required></select>
+              </div>
+
+              <div class="campo-cantidad">
+                <label for="item-cantidad">Cantidad</label>
+                <input type="number" id="item-cantidad" name="cantidad" min="1" step="1" value="1" required>
+              </div>
+
+              <button type="submit" id="btn-agregar-item">Agregar</button>
+            </fieldset>
+          </form>
+
+          <ul id="lista-pedido"></ul>
+          <p id="total-pedido">Total: $0</p>
+
+          <p id="mensaje-pedido" role="alert"></p>
+
+          <form id="form-cerrar-cuenta" novalidate>
+            <fieldset id="campos-cierre" disabled>
+              <legend class="solo-lectores">Cerrar cuenta</legend>
+
+              <div>
+                <label for="forma-pago">Forma de pago</label>
+                <select id="forma-pago" name="formaPago"></select>
+              </div>
+
+              <button type="submit" id="btn-cerrar-cuenta">Cerrar cuenta</button>
+            </fieldset>
+          </form>
+        </aside>
+      </div>
+    </section>
+
+    <!-- CARTA -->
+    <section id="seccion-carta" aria-labelledby="titulo-carta">
+      <h2 id="titulo-carta">Carta</h2>
+
+      <form id="form-producto">
+        <div>
+          <label for="producto-nombre">Nombre</label>
+          <input type="text" id="producto-nombre" name="nombre" required>
+        </div>
+
+        <div>
+          <label for="producto-categoria">Categoría</label>
+          <select id="producto-categoria" name="categoria" required>
+            <option value="">Seleccionar…</option>
+            <option value="bebidas">Bebidas</option>
+            <option value="comidas">Comidas</option>
+            <option value="postres">Postres</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="producto-precio">Precio</label>
+          <input type="number" id="producto-precio" name="precio" min="0" step="0.01" required>
+        </div>
+
+        <div>
+          <input type="checkbox" id="producto-disponible" name="disponible" checked>
+          <label for="producto-disponible">Disponible</label>
+        </div>
+
+        <button type="submit" id="btn-guardar-producto">Guardar producto</button>
+      </form>
+
+      <ul id="lista-productos" aria-label="Productos de la carta"></ul>
+    </section>
+
+    <!-- CONTACTOS -->
+    <section id="seccion-contactos" aria-labelledby="titulo-contactos">
+      <h2 id="titulo-contactos">Contactos</h2>
+
+      <form id="form-contacto">
+        <div>
+          <label for="contacto-nombre">Nombre</label>
+          <input type="text" id="contacto-nombre" name="nombre" required>
+        </div>
+
+        <div>
+          <label for="contacto-telefono">Teléfono</label>
+          <input type="tel" id="contacto-telefono" name="telefono" required>
+        </div>
+
+        <div>
+          <label for="contacto-email">Email</label>
+          <input type="email" id="contacto-email" name="email" required>
+        </div>
+
+        <button type="submit" id="btn-guardar-contacto">Guardar contacto</button>
+      </form>
+
+      <ul id="lista-contactos" aria-label="Lista de contactos"></ul>
+    </section>
+
+    <!-- EVENTOS -->
+    <section id="seccion-eventos" aria-labelledby="titulo-eventos">
+      <h2 id="titulo-eventos">Eventos</h2>
+
+      <form id="form-evento">
+        <div>
+          <label for="evento-titulo">Título</label>
+          <input type="text" id="evento-titulo" name="titulo" required>
+        </div>
+
+        <div>
+          <label for="evento-fecha">Fecha</label>
+          <input type="date" id="evento-fecha" name="fecha" required>
+        </div>
+
+        <div>
+          <label for="evento-hora">Hora</label>
+          <input type="time" id="evento-hora" name="hora" required>
+        </div>
+
+        <div>
+          <label for="evento-contacto">Contacto</label>
+          <select id="evento-contacto" name="contacto" required></select>
+        </div>
+
+        <button type="submit" id="btn-guardar-evento">Guardar evento</button>
+      </form>
+
+      <ul id="lista-eventos" aria-label="Lista de eventos"></ul>
+    </section>
+
+    <!-- CAJA DEL DÍA -->
+    <section id="seccion-caja" aria-labelledby="titulo-caja">
+      <h2 id="titulo-caja">Caja del día</h2>
+
+      <ul id="subtotales-pago" aria-label="Subtotal por forma de pago"></ul>
+
+      <table id="tabla-caja">
+        <thead>
+          <tr>
+            <th scope="col">Hora</th>
+            <th scope="col">Mesa</th>
+            <th scope="col">Forma de pago</th>
+            <th scope="col">Total</th>
+          </tr>
+        </thead>
+        <tbody id="cuerpo-caja"></tbody>
+        <tfoot>
+          <tr>
+            <th scope="row" colspan="3">Total recaudado</th>
+            <td id="total-caja"></td>
+          </tr>
+        </tfoot>
+      </table>
+    </section>
+
+  </main>
+
+  <footer id="pie">
+    <p>Bar La Esquina</p>
+  </footer>
+
+  <div id="ticket" hidden>
+    <article id="ticket-papel" role="dialog" aria-modal="true" aria-labelledby="ticket-titulo">
+      <h2 id="ticket-titulo">Bar La Esquina</h2>
+      <div id="ticket-detalle"></div>
+      <div class="ticket-acciones">
+        <button type="button" id="btn-imprimir-ticket">Imprimir</button>
+        <button type="button" id="btn-cerrar-ticket">Cerrar</button>
+      </div>
+    </article>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
