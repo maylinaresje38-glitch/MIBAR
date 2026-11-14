@@ -524,6 +524,123 @@ function iniciarSalon() {
 
 
 /* ------------------------------------------------------------
+   6B. CARTA: alta de productos, disponibilidad y baja
+   ------------------------------------------------------------ */
+const CATEGORIAS = {
+  bebidas: "🥤 Bebidas",
+  comidas: "🍔 Comidas",
+  postres: "🍮 Postres"
+};
+
+function mostrarProductos() {
+  const lista = document.getElementById("lista-productos");
+  lista.innerHTML = "";
+
+  // Ordenados por categoría y después por nombre
+  const orden = Object.keys(CATEGORIAS);
+  const ordenados = [...productos].sort((a, b) =>
+    orden.indexOf(a.categoria) - orden.indexOf(b.categoria) ||
+    a.nombre.localeCompare(b.nombre, "es")
+  );
+
+  ordenados.forEach((producto) => {
+    const tarjeta = document.createElement("li");
+    if (!producto.disponible) tarjeta.classList.add("no-disponible");
+
+    const info = document.createElement("div");
+    info.className = "producto-info";
+    const nombre = document.createElement("strong");
+    nombre.textContent = producto.nombre;
+    const detalle = document.createElement("small");
+    detalle.textContent =
+      (CATEGORIAS[producto.categoria] || producto.categoria || "Sin categoría") +
+      " · " + formatearPrecio(producto.precio) +
+      (producto.disponible ? "" : " · No disponible");
+    info.append(nombre, detalle);
+
+    const acciones = document.createElement("div");
+    acciones.className = "producto-acciones";
+
+    const botonDisponible = document.createElement("button");
+    botonDisponible.type = "button";
+    botonDisponible.className = "btn-chico";
+    botonDisponible.dataset.accion = "disponible";
+    botonDisponible.dataset.id = producto.id;
+    botonDisponible.textContent = producto.disponible ? "Pausar" : "Activar";
+    botonDisponible.setAttribute(
+      "aria-label",
+      (producto.disponible ? "Marcar como no disponible: " : "Marcar como disponible: ") + producto.nombre
+    );
+
+    const botonEliminar = document.createElement("button");
+    botonEliminar.type = "button";
+    botonEliminar.className = "btn-chico btn-eliminar";
+    botonEliminar.dataset.accion = "eliminar";
+    botonEliminar.dataset.id = producto.id;
+    botonEliminar.textContent = "🗑️";
+    botonEliminar.setAttribute("aria-label", "Eliminar " + producto.nombre);
+
+    acciones.append(botonDisponible, botonEliminar);
+    tarjeta.append(info, acciones);
+    lista.appendChild(tarjeta);
+  });
+}
+
+// Después de cualquier cambio en la carta se actualiza también el Salón
+function actualizarCarta() {
+  guardarDatos();
+  mostrarProductos();
+  llenarSelectProductos();
+}
+
+function guardarProducto(ev) {
+  ev.preventDefault();
+  const formulario = ev.target;
+
+  const nombre = formulario.elements.nombre.value.trim();
+  const precio = Number(formulario.elements.precio.value);
+  if (!nombre || !Number.isFinite(precio) || precio < 0) return;
+
+  productos.push({
+    id: generarId(productos),
+    nombre: nombre,
+    categoria: formulario.elements.categoria.value,
+    precio: precio,
+    disponible: formulario.elements.disponible.checked
+  });
+
+  actualizarCarta();
+  formulario.reset();
+  formulario.elements.nombre.focus();
+}
+
+function accionProducto(ev) {
+  const boton = ev.target.closest("button[data-accion]");
+  if (!boton) return;
+
+  const producto = productos.find((p) => p.id === Number(boton.dataset.id));
+  if (!producto) return;
+
+  if (boton.dataset.accion === "disponible") {
+    producto.disponible = !producto.disponible;
+  } else if (boton.dataset.accion === "eliminar") {
+    // Los pedidos guardan su propia copia de nombre y precio,
+    // así que borrar un producto no cambia cuentas abiertas ni la caja
+    if (!confirm("¿Eliminar «" + producto.nombre + "» de la carta?")) return;
+    productos = productos.filter((p) => p !== producto);
+  }
+
+  actualizarCarta();
+}
+
+function iniciarCarta() {
+  document.getElementById("form-producto").addEventListener("submit", guardarProducto);
+  document.getElementById("lista-productos").addEventListener("click", accionProducto);
+  mostrarProductos();
+}
+
+
+/* ------------------------------------------------------------
    7. CIERRE DE CUENTA, TICKET Y CAJA DEL DÍA
    ------------------------------------------------------------ */
 const FORMAS_PAGO = [
@@ -818,6 +935,7 @@ function redibujarTodo() {
   mostrarContactos();
   mostrarEventos();
   llenarSelectContactos();
+  mostrarProductos();
   llenarSelectProductos();
   mostrarCaja();
 }
@@ -899,6 +1017,7 @@ cargarDatos();
 iniciarMenu();
 iniciarFormularios();
 iniciarSalon();
+iniciarCarta();
 iniciarCaja();
 iniciarExportarImportar();
 

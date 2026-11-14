@@ -1,6 +1,6 @@
 // Service worker: guarda los archivos para que la app funcione sin internet.
-// Cada vez que cambies algo de la app, subí el número de versión (v2 -> v3).
-const CACHE = 'bar-v2';
+// Cada vez que cambies algo de la app, subí el número de versión (v3 -> v4).
+const CACHE = 'bar-v3';
 
 const ARCHIVOS = [
   './',

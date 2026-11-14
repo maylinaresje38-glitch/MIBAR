@@ -937,6 +937,42 @@ button:disabled:hover {
   color: var(--verde-texto);
 }
 
+/* 19. CARTA: tarjetas de producto con acciones */
+.producto-info {
+  display: grid;
+  min-width: 0;
+}
+
+.producto-info strong {
+  color: var(--cafe);
+  font-family: var(--fuente-titulos);
+}
+
+.producto-info small {
+  color: var(--cafe-claro);
+}
+
+.producto-acciones {
+  display: flex;
+  flex-shrink: 0;
+  gap: 0.4rem;
+}
+
+.btn-chico {
+  padding: 0.4rem 0.75rem;
+  font-size: 0.85rem;
+  background: var(--blanco);
+}
+
+.btn-chico:hover {
+  background: var(--naranja);
+}
+
+.btn-eliminar:hover {
+  background: #FDE3DA;
+  border-color: #E5806A;
+}
+
 /* 14. ACCESIBILIDAD: respeta a quien prefiere menos movimiento */
 @media (prefers-reduced-motion: reduce) {
   *,
